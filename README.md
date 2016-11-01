@@ -1,2 +1,2 @@
 # Coursera_L3
-The file is used to record the code of Coursera problems solution
+#The data has been cleaned and tidied by changing variables names and selecting and filtering data.
