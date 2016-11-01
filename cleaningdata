@@ -1,0 +1,15 @@
+#change work dir
+setwd("C:/Users/xiang/Documents/UCI HAR Dataset")
+#read files
+training_set<-read.table("./train/X_train.txt")
+test_set<-read.table("./test/X_test.txt")
+dataset<-merge(training_set,test_set)
+library(dplyr)
+library(data.table)
+library(tidyr)
+test_set<-tbl_df(test_set)
+training_set<-tbl_df(training_set)
+dataset<-rbind(test_set,training_set)
+col_names<-tbl_df(read.csv("./features.txt",header = FALSE))
+col<-filter(col_names,!nchar(as.character(col_names$V1))<3)
+col<-unique(col)
