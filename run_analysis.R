@@ -35,4 +35,5 @@ names(dataset_select)<-gsub("Acc", "Accelerometer", names(dataset_select))
 names(dataset_select)<-gsub("Gyro", "Gyroscope", names(dataset_select))
 names(dataset_select)<-gsub("Mag", "Magnitude", names(dataset_select))
 names(dataset_select)<-gsub("BodyBody", "Body", names(dataset_select))
+#write a new table and name as "tidy data"
 write.table(dataset_select, "TidyData.txt", row.name=FALSE)
