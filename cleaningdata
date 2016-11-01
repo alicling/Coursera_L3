@@ -4,6 +4,7 @@ setwd("C:/Users/xiang/Documents/UCI HAR Dataset")
 training_set<-read.table("./train/X_train.txt")
 test_set<-read.table("./test/X_test.txt")
 dataset<-merge(training_set,test_set)
+#load package
 library(dplyr)
 library(data.table)
 library(tidyr)
@@ -12,10 +13,26 @@ training_set<-tbl_df(training_set)
 dataset<-rbind(test_set,training_set)
 #adjust colume names
 col_names<-tbl_df(read.csv("./features.txt",header = FALSE))
+#filter columes name
 col<-filter(col_names,!nchar(as.character(col_names$V1))<3)
 col<-unique(col)
 col<-col[-c(556,558),]
 colnames(dataset)<-t(col)
-dataset_select1<-select(dataset,contains("mean"))
-dataset_select2<-select(dataset,contains("std"))
+#select columes
+dataset_select1<-select(dataset,contains("mean()"))
+dataset_select2<-select(dataset,contains("std()"))
 dataset_select<-cbind(dataset_select1,dataset_select2)
+#split the names
+splitnames<-strsplit(names(dataset_select),"\\ ")
+secondelement<-function(x){x[2]}
+newnames<-sapply(splitnames,secondelement)
+colnames(dataset_select)<-newnames
+#change names into tidy names
+names(dataset_select)<-gsub("mean()", "MEAN", names(dataset_select))
+names(dataset_select)<-gsub("^t", "time", names(dataset_select))
+names(dataset_select)<-gsub("^f", "frequency", names(dataset_select))
+names(dataset_select)<-gsub("Acc", "Accelerometer", names(dataset_select))
+names(dataset_select)<-gsub("Gyro", "Gyroscope", names(dataset_select))
+names(dataset_select)<-gsub("Mag", "Magnitude", names(dataset_select))
+names(dataset_select)<-gsub("BodyBody", "Body", names(dataset_select))
+write.table(dataset_select, "TidyData.txt", row.name=FALSE)
