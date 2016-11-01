@@ -10,6 +10,12 @@ library(tidyr)
 test_set<-tbl_df(test_set)
 training_set<-tbl_df(training_set)
 dataset<-rbind(test_set,training_set)
+#adjust colume names
 col_names<-tbl_df(read.csv("./features.txt",header = FALSE))
 col<-filter(col_names,!nchar(as.character(col_names$V1))<3)
 col<-unique(col)
+col<-col[-c(556,558),]
+colnames(dataset)<-t(col)
+dataset_select1<-select(dataset,contains("mean"))
+dataset_select2<-select(dataset,contains("std"))
+dataset_select<-cbind(dataset_select1,dataset_select2)
